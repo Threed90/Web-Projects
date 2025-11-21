@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="ProductCatalog.Api/ProductCatalog.Api.csproj" />
+  <Project Path="ProductCatalog.Data/ProductCatalog.Data.csproj" />
+  <Project Path="ProductCatalog.gRPC/ProductCatalog.gRPC.csproj" />
+  <Project Path="ProductCatalog.Models/ProductCatalog.Models.csproj" />
+  <Project Path="ProductCatalog.Services/ProductCatalog.Services.csproj" />
+  <Project Path="ProductCatalog/ProductCatalog.csproj" />
+</Solution>
