@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1ac96dbb-8d4c-41cb-ab74-080979797fb5",
+    "name": "Laptop",
+    "price": 999.99,
+    "quantity": 50
+  },
+  {
+    "id": "d6a6de0f-38e7-437f-a814-91192a555851",
+    "name": "Mouse",
+    "price": 20.50,
+    "quantity": 200
+  },
+  {
+    "id": "1e4c3c2b-3ce3-4ec8-a9fa-9aedf595f0e7",
+    "name": "Keyboard",
+    "price": 215.75,
+    "quantity": 80
+  }
+]

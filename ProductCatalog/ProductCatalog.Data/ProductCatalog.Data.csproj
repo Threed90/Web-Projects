@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="StaticData\" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProductCatalog.Models\ProductCatalog.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="StaticData\product_data.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

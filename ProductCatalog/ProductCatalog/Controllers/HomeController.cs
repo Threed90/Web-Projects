@@ -1,11 +1,19 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Models;
+using ProductCatalog.Models.DTO;
+using ProductCatalog.Services.Interfaces;
 
 namespace ProductCatalog.Controllers
 {
     public class HomeController : Controller
     {
+        private IProductService _productService;
+
+        public HomeController(IProductService productService)
+        {
+            this._productService = productService;
+        }
         public IActionResult Index()
         {
             return View();
@@ -14,6 +22,12 @@ namespace ProductCatalog.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Products()
+        {
+            return View(this._productService.GetAll());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
