@@ -12,6 +12,27 @@ builder.Services.AddEndpointsApiExplorer();
 
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.OpenApiInfo
+    {
+        Title = "ProductCatalog.Api",
+        Description = "An API for exercice purposes... Does not contain any large data or meaningful bisness logic.",
+        License = new Microsoft.OpenApi.OpenApiLicense
+        {
+            Name = "Use under MIT",
+            Url = new Uri("https://opensource.org/licenses/MIT")
+        },
+        Contact = new Microsoft.OpenApi.OpenApiContact
+        {
+            Name = "ProductCatalog.Api Support",
+            Email = "any@mail.com"
+        },
+        Version = "v1"
+    });
+
+    c.IncludeXmlComments("ProductCatalogApiDocumentation.xml");
+});
 
 var app = builder.Build();
 
