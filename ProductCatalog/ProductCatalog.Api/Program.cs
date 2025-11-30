@@ -10,6 +10,18 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("LocalDev", policy =>
+    {
+        policy.WithOrigins(
+                "https://localhost:7184", // example: your frontend HTTPS origin
+                "http://localhost:5000"   // your http frontend origin that caused the CORS error
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddSwaggerGen(c =>
@@ -48,6 +60,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// IMPORTANT: enable CORS before MapControllers / UseAuthorization
+app.UseCors("LocalDev");
 
 app.UseAuthorization();
 

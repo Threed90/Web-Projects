@@ -25,9 +25,10 @@ namespace ProductCatalog.Api.Controllers
         [HttpGet(Name = "All")]
         [Produces("application/json")]
         [ProducesResponseType(200, StatusCode = StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductDTO>))]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_productService.GetAll());
+            var products = await _productService.GetAll();
+            return Ok(products);
         }
     }
 }

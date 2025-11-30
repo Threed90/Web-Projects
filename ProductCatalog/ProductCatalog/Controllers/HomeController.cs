@@ -25,9 +25,9 @@ namespace ProductCatalog.Controllers
         }
 
         [HttpGet]
-        public IActionResult Products()
+        public async Task<IActionResult> Products()
         {
-            return View(this._productService.GetAll());
+            return View(await this._productService.GetAll());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

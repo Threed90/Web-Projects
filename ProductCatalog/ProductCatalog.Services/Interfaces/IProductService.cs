@@ -4,6 +4,6 @@ namespace ProductCatalog.Services.Interfaces
 {
     public interface IProductService
     {
-        public List<ProductDTO> GetAll();
+        public Task<List<ProductDTO>> GetAll();
     }
 }

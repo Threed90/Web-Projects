@@ -4,6 +4,13 @@
         <name>ProductCatalog.Api</name>
     </assembly>
     <members>
+        <member name="M:ProductCatalog.Api.Controllers.ProductController.GetAll">
+            <summary>
+            Retrieves all available products.
+            </summary>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> containing the collection of products. The result has an HTTP 200 status code
+            if successful.</returns>
+        </member>
         <member name="T:Program">
             <summary>
             Auto-generated public partial Program class for top-level statement apps.
