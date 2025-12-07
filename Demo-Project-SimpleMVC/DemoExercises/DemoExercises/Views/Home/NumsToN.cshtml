@@ -1,0 +1,19 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Numbers to N";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<ul>
+    @for (int i = 1; i <= Model; i++)
+    {
+        <li>@i</li>
+    }
+
+</ul>
+
+<form  method="post">
+    <input type="number" name="count" value="@Model" />
+    <button type="submit">Submit</button>
+</form>
