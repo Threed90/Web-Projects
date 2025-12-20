@@ -8,12 +8,6 @@ namespace ProductCatalog.Controllers
 {
     public class HomeController : Controller
     {
-        private IProductService _productService;
-
-        public HomeController(IProductService productService)
-        {
-            this._productService = productService;
-        }
         public IActionResult Index()
         {
             return View();
@@ -24,11 +18,7 @@ namespace ProductCatalog.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Products()
-        {
-            return View(await this._productService.GetAll());
-        }
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
