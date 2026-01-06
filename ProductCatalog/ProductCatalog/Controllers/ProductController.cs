@@ -22,13 +22,17 @@ namespace ProductCatalog.Controllers
         public async Task<IActionResult> Details(string id)
         {
             var product = await this.productService.GetById(id);
+
             if (product == null)
             {
                 return NotFound();
             }
+
+            product.Id = Guid.Parse(id);
             return View(product);
         }
 
+        [HttpPost()]
         public async Task<IActionResult> Delete(string id)
         {
             var success = await this.productService.DeleteProduct(id);
@@ -42,7 +46,7 @@ namespace ProductCatalog.Controllers
         [HttpGet()]
         public async Task<IActionResult> Add()
         {
-            return View();
+            return View(new ProductDTO());
         }
 
         [HttpPost()]
@@ -80,7 +84,7 @@ namespace ProductCatalog.Controllers
                 return NotFound();
             }
 
-            return View("Details", updatedId);
+            return RedirectToAction(nameof(Details), new { id = updatedId });
         }
     }
 }

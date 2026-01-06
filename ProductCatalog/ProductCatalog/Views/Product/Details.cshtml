@@ -1,0 +1,30 @@
+﻿@using ProductCatalog.Models.DTO
+
+@model ProductDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Product Details</h1>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Name</h5>
+                <p class="card-text">Price @Model.Price</p>
+                <p class="card-text">Quantity: @Model.Quantity</p>
+                <a asp-action="Edit" asp-controller="Product" class="btn btn-success">EDIT</a>
+
+                <form asp-action="Delete" asp-controller="Product" asp-route-id=@Model.Id.ToString() method="post">
+                    <button class="btn btn-danger">DELETE</button>
+                </form>
+
+                <a asp-action="Products" asp-controller="Product" class="btn btn-primary">Back</a>
+                
+            </div>
+        </div>
+    </div>>
+    </div>
+</div>

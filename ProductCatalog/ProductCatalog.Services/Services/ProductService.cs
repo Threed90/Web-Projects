@@ -30,9 +30,21 @@ namespace ProductCatalog.Services.Services
             await _repository.SaveChangesAsync();
         }
 
-        public Task<bool> DeleteProduct(string productId)
+        public async Task<bool> DeleteProduct(string productId)
         {
-            throw new NotImplementedException();
+            var productForDelete = await this._repository
+                .All<Product>()
+                .Where(p => p.Id.ToString() == productId)
+                .FirstOrDefaultAsync();
+
+            if(productForDelete == null)
+            {
+                return false;
+            }
+
+            await this._repository.DeleteAsync<Product>(productForDelete.Id);
+            await this._repository.SaveChangesAsync();
+            return true;
         }
 
         public async Task<List<ProductDTO>> GetAll()
@@ -76,7 +88,12 @@ namespace ProductCatalog.Services.Services
 
             if (productForUpdate != null)
             {
+                productForUpdate.Name = product.Name;
+                productForUpdate.Price = product.Price;
+                productForUpdate.Quantity = product.Quantity;
+
                 _repository.Update(productForUpdate);
+                await _repository.SaveChangesAsync();
                 return productId;
             }
             else

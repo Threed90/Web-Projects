@@ -15,7 +15,9 @@
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
-            <th>Category</th>
+            <th>Edit</th>
+            <th>Details</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +27,18 @@
                 <td>@product.Name</td>
                 <td>@product.Price.ToString("F2")</td>
                 <td>@product.Quantity</td>
+                <td>
+                    <a asp-route-id=@product.Id.ToString() asp-action="Edit" asp-controller="Product" class="btn btn-success">EDIT</a>
+                </td>
+                <td>
+                    <a asp-route-id=@product.Id.ToString() asp-action="Details" asp-controller="Product" class="btn btn-secondary">DETAILS</a>
+                </td>
+                <td>
+                    <form asp-action="Delete" asp-controller="Product" asp-route-id=@product.Id.ToString() method="post">
+                        <button class="btn btn-danger">DELETE</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
+</table>
