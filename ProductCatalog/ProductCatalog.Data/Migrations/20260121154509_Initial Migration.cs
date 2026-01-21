@@ -16,7 +16,7 @@ namespace ProductCatalog.Data.Migrations
                 name: "asp_net_roles",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "text", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     normalized_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     concurrency_stamp = table.Column<string>(type: "text", nullable: true)
@@ -30,7 +30,9 @@ namespace ProductCatalog.Data.Migrations
                 name: "asp_net_users",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "text", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    first_name = table.Column<string>(type: "text", nullable: true),
+                    last_name = table.Column<string>(type: "text", nullable: true),
                     user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     normalized_user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -71,7 +73,7 @@ namespace ProductCatalog.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    role_id = table.Column<string>(type: "text", nullable: false),
+                    role_id = table.Column<Guid>(type: "uuid", nullable: false),
                     claim_type = table.Column<string>(type: "text", nullable: true),
                     claim_value = table.Column<string>(type: "text", nullable: true)
                 },
@@ -92,7 +94,7 @@ namespace ProductCatalog.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    user_id = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
                     claim_type = table.Column<string>(type: "text", nullable: true),
                     claim_value = table.Column<string>(type: "text", nullable: true)
                 },
@@ -100,7 +102,7 @@ namespace ProductCatalog.Data.Migrations
                 {
                     table.PrimaryKey("p_k_asp_net_user_claims", x => x.id);
                     table.ForeignKey(
-                        name: "f_k_asp_net_user_claims_asp_net_users_user_id",
+                        name: "f_k_asp_net_user_claims__asp_net_users_user_id",
                         column: x => x.user_id,
                         principalTable: "asp_net_users",
                         principalColumn: "id",
@@ -114,13 +116,13 @@ namespace ProductCatalog.Data.Migrations
                     login_provider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     provider_key = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     provider_display_name = table.Column<string>(type: "text", nullable: true),
-                    user_id = table.Column<string>(type: "text", nullable: false)
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("p_k_asp_net_user_logins", x => new { x.login_provider, x.provider_key });
                     table.ForeignKey(
-                        name: "f_k_asp_net_user_logins_asp_net_users_user_id",
+                        name: "f_k_asp_net_user_logins__asp_net_users_user_id",
                         column: x => x.user_id,
                         principalTable: "asp_net_users",
                         principalColumn: "id",
@@ -131,22 +133,22 @@ namespace ProductCatalog.Data.Migrations
                 name: "asp_net_user_roles",
                 columns: table => new
                 {
-                    user_id = table.Column<string>(type: "text", nullable: false),
-                    role_id = table.Column<string>(type: "text", nullable: false)
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    role_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("p_k_asp_net_user_roles", x => new { x.user_id, x.role_id });
                     table.ForeignKey(
-                        name: "f_k_asp_net_user_roles_asp_net_roles_role_id",
-                        column: x => x.role_id,
-                        principalTable: "asp_net_roles",
+                        name: "f_k_asp_net_user_roles__asp_net_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "asp_net_users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "f_k_asp_net_user_roles_asp_net_users_user_id",
-                        column: x => x.user_id,
-                        principalTable: "asp_net_users",
+                        name: "f_k_asp_net_user_roles_asp_net_roles_role_id",
+                        column: x => x.role_id,
+                        principalTable: "asp_net_roles",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -155,7 +157,7 @@ namespace ProductCatalog.Data.Migrations
                 name: "asp_net_user_tokens",
                 columns: table => new
                 {
-                    user_id = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
                     login_provider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     value = table.Column<string>(type: "text", nullable: true)
@@ -164,7 +166,7 @@ namespace ProductCatalog.Data.Migrations
                 {
                     table.PrimaryKey("p_k_asp_net_user_tokens", x => new { x.user_id, x.login_provider, x.name });
                     table.ForeignKey(
-                        name: "f_k_asp_net_user_tokens_asp_net_users_user_id",
+                        name: "f_k_asp_net_user_tokens__asp_net_users_user_id",
                         column: x => x.user_id,
                         principalTable: "asp_net_users",
                         principalColumn: "id",
