@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Models.DTO;
 using ProductCatalog.Services.Interfaces;
 
 namespace ProductCatalog.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private IProductService productService;
@@ -28,7 +30,6 @@ namespace ProductCatalog.Controllers
                 return NotFound();
             }
 
-            product.Id = Guid.Parse(id);
             return View(product);
         }
 

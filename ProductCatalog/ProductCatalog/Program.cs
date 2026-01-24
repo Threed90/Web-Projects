@@ -14,7 +14,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false; // set true to require symbols
+    options.Password.RequiredLength = 8;
+    options.Password.RequiredUniqueChars = 1;
+})
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.ConfigureApplicationCookie(opt =>
@@ -22,11 +32,17 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.LoginPath = "/User/Login";
     opt.LogoutPath = "/User/Logout";
     opt.AccessDeniedPath = "/User/AccessDenied";
+
+    opt.Cookie.HttpOnly = true;
+    opt.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
+    opt.ExpireTimeSpan = TimeSpan.FromDays(14);
+    opt.SlidingExpiration = true;
 });
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

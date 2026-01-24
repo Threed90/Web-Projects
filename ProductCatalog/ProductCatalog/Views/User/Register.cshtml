@@ -1,23 +1,37 @@
-﻿
+﻿@using ProductCatalog.Models.DTO
+@model RegisterDTO
 @{
     ViewData["Title"] = "User Register";
 }
 
-<form action="" class="user-form">
+<form asp-action="Register" asp-controller="User" class="user-form">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="user-fields-container">
-        <label for="userName" class="user-label">User Name</label>
-        <input type="text" name="userName" class="input-username">
+        <label for="Username" class="user-label">User Name</label>
+        <input asp-for="Username" class="input-username">
+        <span asp-validation-for="Username" class="text-danger"></span>
 
-        <label for="email" class="user-label">Email</label>
-        <input type="email" name="email" class="input-email">
+        <label for="Email" class="user-label">Email</label>
+        <input asp-for="Email"  class="input-email">
+        <span asp-validation-for="Email" class="text-danger"></span>
 
-        <label for="password" class="user-label">Password</label>
-        <input type="password" name="password" class="input-password">
+        <label for="Password" class="user-label">Password</label>
+        <input asp-for="Password" class="input-password">
+        <span asp-validation-for="Password" class="text-danger"></span>
 
-        <label for="confirmPass" class="user-label">Confirm Password</label>
-        <input type="password" name="confirmPass" class="input-confirmPass">
+        <label for="ConfirmPassword" class="user-label">Confirm Password</label>
+        <input asp-for="ConfirmPassword" class="input-confirmPass">
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
 
         <input type="submit" class="btn-register" value="Register">
     </div>
 
 </form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

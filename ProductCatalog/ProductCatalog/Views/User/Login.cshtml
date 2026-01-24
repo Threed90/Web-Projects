@@ -1,18 +1,31 @@
-﻿
+﻿@model ProductCatalog.Models.DTO.LoginDTO
 @{
     ViewBag.Title = "User Login";
 }
 
 
-<form action="" class="user-form">
+<h2>Login</h2>
+
+<form asp-action="Login" asp-controller="User" method="post" class="user-form">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="user-fields-container">
-        <label for="userName" class="user-label">User Name</label>
-        <input type="text" name="userName" class="input-username">
+        <label for="Username" class="user-label">User Name</label>
+        <input asp-for="Username" class="form-control input-username" />
+        <span asp-validation-for="Username" class="text-danger"></span>
 
-        <label for="password" class="user-label">Password</label>
-        <input type="password" name="password" class="input-password">
+        <label for="Password" class="user-label">Password</label>
+        <input asp-for="Password" class="form-control input-password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
 
-        <input type="submit" class="btn-login" value="Login">
+        <input asp-for="ReturnUrl" type="hidden" />
+
+        <input type="submit" class="btn-login btn btn-primary" value="Login" />
     </div>
-
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
