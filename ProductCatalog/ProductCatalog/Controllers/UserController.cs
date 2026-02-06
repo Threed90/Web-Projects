@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Models.DTO;
 using ProductCatalog.Services.Interfaces;
 
 namespace ProductCatalog.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserService userService;
 
@@ -14,6 +15,7 @@ namespace ProductCatalog.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login(string? returnUrl)
         {
             var model = new LoginDTO()
@@ -25,6 +27,7 @@ namespace ProductCatalog.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginDTO loginModel)
         {
@@ -52,6 +55,7 @@ namespace ProductCatalog.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             var model = new RegisterDTO();
@@ -59,6 +63,7 @@ namespace ProductCatalog.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterDTO registerModel)
         {

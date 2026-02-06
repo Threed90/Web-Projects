@@ -25,6 +25,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequiredLength = 8;
     options.Password.RequiredUniqueChars = 1;
 })
+    .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.ConfigureApplicationCookie(opt =>
@@ -37,6 +38,12 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
     opt.ExpireTimeSpan = TimeSpan.FromDays(14);
     opt.SlidingExpiration = true;
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminRights", policy => policy.RequireAssertion(p => p.User.IsInRole("Admin") && p.User.IsInRole("StaffMember")));
+    options.AddPolicy("StaffRights", policy => policy.RequireRole("StaffMember"));
 });
 
 builder.Services.AddControllersWithViews();

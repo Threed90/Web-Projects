@@ -6,7 +6,7 @@ using ProductCatalog.Services.Interfaces;
 namespace ProductCatalog.Controllers
 {
     [Authorize]
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private IProductService productService;
 
@@ -16,6 +16,7 @@ namespace ProductCatalog.Controllers
         }
 
         [HttpGet("/Products")]
+        [AllowAnonymous]
         public async Task<IActionResult> Products()
         {
             return View(await this.productService.GetAll());
