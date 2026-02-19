@@ -14,7 +14,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<User>
     (options =>
     {
-        options.SignIn.RequireConfirmedAccount = true;
+        // Allow login without confirmed email in development/testing. Set to true in production.
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
     })
     .AddEntityFrameworkStores<TaskBoardAppDbContext>();
 builder.Services.AddControllersWithViews();
