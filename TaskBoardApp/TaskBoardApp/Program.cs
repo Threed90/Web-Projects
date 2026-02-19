@@ -1,17 +1,22 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TaskBoardApp.Data;
+using TaskBoardApp.Data.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<TaskBoardAppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<User>
+    (options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+    })
+    .AddEntityFrameworkStores<TaskBoardAppDbContext>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -42,5 +47,23 @@ app.MapControllerRoute(
 
 app.MapRazorPages()
    .WithStaticAssets();
+
+// Run seeding after the server has started so startup (HTTPS binding) is not blocked by DB work.
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    System.Threading.Tasks.Task.Run(async () =>
+    {
+        try
+        {
+            await app.SeedDataAsync();
+        }
+        catch (Exception ex)
+        {
+            var logger = app.Services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "Seeding failed");
+            // Do not rethrow — background failure should not stop the running host
+        }
+    });
+});
 
 app.Run();
